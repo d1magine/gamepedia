@@ -17,3 +17,7 @@
     @apply text-[50px] font-bold mobile:text-[60px];
   }
 }
+
+.masonry-column {
+  padding-left: 24px;
+}

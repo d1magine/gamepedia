@@ -1,26 +1,49 @@
 import React from "react";
-import { BsPlaystation } from "react-icons/bs";
+import {
+  BsWindows,
+  BsPlaystation,
+  BsXbox,
+  BsApple,
+  BsAndroid,
+  BsPhone,
+} from "react-icons/bs";
+import { FaLinux } from "react-icons/fa";
+import { SiNintendo } from "react-icons/si";
+import { TbWorldWww } from "react-icons/tb";
 import { MdAdd } from "react-icons/md";
 
-export default function Game() {
+const iconSize = "14px";
+const platformIcons = {
+  PC: <BsWindows key="pc" size={iconSize} />,
+  PlayStation: <BsPlaystation key="playstation" size="18px" />,
+  Xbox: <BsXbox key="xbox" size={iconSize} />,
+  iOS: <BsPhone key="ios" size={iconSize} />,
+  Android: <BsAndroid key="android" size={iconSize} />,
+  "Apple Macintosh": <BsApple key="mac" size={iconSize} />,
+  Linux: <FaLinux key="linux" size="15px" />,
+  Nintendo: <SiNintendo key="nintendo" size={iconSize} />,
+  Web: <TbWorldWww key="web" size={iconSize} />,
+};
+
+export default function Game({ title, genres, coverSrc, platforms }) {
   return (
-    <div className="max-w-[440px] duration-150 hover:scale-[1.01] hover:drop-shadow-[7px_7px_8px_rgba(0,0,0,0.25)]">
+    <div className="mx-auto mb-6 max-w-[440px] transition ease-linear hover:scale-[1.02] hover:shadow-lg">
       <div className="h-64">
         <img
-          className="h-full rounded-t-2xl object-cover object-center"
-          src="https://media.rawg.io/media/games/909/909974d1c7863c2027241e265fe7011f.jpg"
+          className="h-full w-full rounded-t-2xl object-cover"
+          src={coverSrc}
           alt=""
         />
       </div>
-      <div className="rounded-b-2xl bg-[#2C2E34] px-4 pb-5 pt-3">
-        <h4 className="mb-1 text-2xl font-bold">The Last of Us Part II</h4>
-        <p className="mb-2 text-[13px] opacity-80">
-          Sony Interactive Entertainment
+      <div className="rounded-b-2xl bg-zinc-800 px-4 pb-5 pt-3">
+        <h4 className="mb-1 text-2xl font-bold">{title}</h4>
+        <p className="mb-3 text-[13px] opacity-80">
+          {genres.map((genre) => genre.name).join(", ")}
         </p>
-        <div className="mb-3">
-          <BsPlaystation size="18px" />
+        <div className="mb-4 flex items-center gap-3">
+          {platforms.map((platform) => platformIcons[platform.platform.name])}
         </div>
-        <button className="flex items-center gap-1 rounded bg-white px-3 py-2 text-sm font-semibold text-black">
+        <button className="flex items-center gap-1 rounded bg-white px-3 py-2 text-sm font-semibold text-black transition-opacity ease-linear hover:opacity-70">
           <MdAdd size="20px" />
           Favorite
         </button>

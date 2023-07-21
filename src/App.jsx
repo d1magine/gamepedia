@@ -16,9 +16,9 @@ function App() {
 
   // API вызов, чтобы получить список игр
   useEffect(() => {
-    // axios.get(url).then((response) => {
-    //   setGames(response.data.results);
-    // });
+    axios.get(url).then((response) => {
+      setGames(response.data.results);
+    });
   }, []);
 
   // Скрыть мобильное меню при клике в любом месте
@@ -33,7 +33,7 @@ function App() {
   });
 
   return (
-    <div className="mx-auto box-content max-w-[1200px] px-4 text-white mobile:px-6">
+    <div className="mx-auto box-content max-w-[1400px] px-4 text-white mobile:px-6">
       <Navbar
         ref={mobileMenuRef}
         menuIsActive={menuIsActive}
