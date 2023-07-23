@@ -6,7 +6,11 @@ export default {
       tablet: "930px",
       laptop: "1200px",
     },
-    extend: {},
+    extend: {
+      animation: {
+        "spin-fast": "spin 0.8s linear infinite",
+      },
+    },
   },
 
   plugins: [],

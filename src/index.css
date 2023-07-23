@@ -19,5 +19,6 @@
 }
 
 .masonry-column {
-  padding-left: 24px;
+  padding-top: 12px;
+  overflow: hidden;
 }

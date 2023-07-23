@@ -6,19 +6,43 @@ import SignUp from "./pages/SignUp";
 import { useState, useRef, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 
+const apiKey = import.meta.env.VITE_API_KEY;
+
 function App() {
-  const [games, setGames] = useState([]);
-  const url =
-    "https://api.rawg.io/api/games?key=f27b088f0fd34d2b84364897a8aac398&page=1&page_size=40&dates=2023-01-01,2024-12-31&ordering=-added";
+  const [gamesList, setGamesList] = useState({
+    games: [],
+    hasMore: true,
+  });
+  const [page, setPage] = useState(1);
 
   const [menuIsActive, setMenuIsActive] = useState(false);
   const mobileMenuRef = useRef(null);
 
-  // API вызов, чтобы получить список игр
+  async function fetchGames() {
+    try {
+      const response = await axios.get(
+        `https://api.rawg.io/api/games?key=${apiKey}&page=${page}&page_size=40&dates=2023-01-01,2025-12-31&ordering=-added`
+      );
+      const fetchedGames = response.data.results;
+
+      if (fetchedGames.length > 0) {
+        setGamesList({
+          ...gamesList,
+          games: [...gamesList.games, ...fetchedGames],
+        });
+        setPage(page + 1);
+      } else {
+        setGamesList({
+          ...gamesList,
+          hasMore: false,
+        });
+      }
+    } catch (error) {}
+  }
+
+  // Вызвать API, чтобы получить список игр
   useEffect(() => {
-    axios.get(url).then((response) => {
-      setGames(response.data.results);
-    });
+    fetchGames();
   }, []);
 
   // Скрыть мобильное меню при клике в любом месте
@@ -40,7 +64,10 @@ function App() {
         setMenuIsActive={setMenuIsActive}
       />
       <Routes>
-        <Route path="/" element={<Home games={games} />} />
+        <Route
+          path="/"
+          element={<Home gamesList={gamesList} fetchNextPage={fetchGames} />}
+        />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
       </Routes>
