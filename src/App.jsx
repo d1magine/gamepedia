@@ -5,6 +5,7 @@ import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import { useState, useRef, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
+import GameDetails from "./pages/GameDetails";
 
 const apiKey = import.meta.env.VITE_API_KEY;
 
@@ -57,7 +58,7 @@ function App() {
   });
 
   return (
-    <div className="mx-auto box-content max-w-[1400px] px-4 text-white mobile:px-6">
+    <div className="mx-auto box-content max-w-[1400px] px-4 text-white mobile:px-10">
       <Navbar
         ref={mobileMenuRef}
         menuIsActive={menuIsActive}
@@ -70,6 +71,7 @@ function App() {
         />
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/games/:gameSlug" element={<GameDetails />} />
       </Routes>
       {/* Оверлей */}
       <div

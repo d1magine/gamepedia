@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   BsWindows,
   BsPlaystation,
@@ -26,7 +27,7 @@ const platformIcons = {
   Web: <TbWorldWww key="web" size={iconSize} />,
 };
 
-export default function Game({ title, genres, coverSrc, platforms }) {
+export default function Game({ slug, title, genres, coverSrc, platforms }) {
   return (
     <div className="mx-auto mb-6 max-w-[440px] transition ease-linear hover:-translate-y-[7px] hover:shadow-xl">
       <div className="h-64">
@@ -41,7 +42,11 @@ export default function Game({ title, genres, coverSrc, platforms }) {
         )}
       </div>
       <div className="rounded-b-2xl bg-zinc-800 px-4 pb-5 pt-3">
-        <h4 className="mb-1 text-2xl font-bold">{title}</h4>
+        <Link to={`games/${slug}`}>
+          <h4 className="mb-1 text-2xl font-bold transition-opacity ease-linear hover:opacity-60">
+            {title}
+          </h4>
+        </Link>
         {genres.length !== 0 && (
           <p className="mb-3 text-[13px] opacity-80">
             {genres.map((genre) => genre.name).join(", ")}

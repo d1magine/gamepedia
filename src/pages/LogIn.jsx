@@ -14,6 +14,7 @@ export default function LogIn() {
   return (
     <div className="mx-auto max-w-md px-5 pt-24 text-center mobile:px-0 mobile:pt-32">
       <Helmet>
+        <title>Log In | Gamepedia</title>
         <body
           className={`h-screen bg-[#000000b3] bg-[url("./assets/login-background.jpg")] bg-cover bg-center bg-no-repeat bg-blend-overlay`}
         />
