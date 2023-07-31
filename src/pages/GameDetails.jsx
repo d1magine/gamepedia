@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import { Helmet } from "react-helmet";
@@ -7,6 +7,8 @@ import { Helmet } from "react-helmet";
 const apiKey = import.meta.env.VITE_API_KEY;
 
 export default function GameDetails() {
+  const location = useLocation();
+
   const { gameSlug } = useParams();
 
   const [gameInfo, setGameInfo] = useState({});
@@ -33,6 +35,8 @@ export default function GameDetails() {
   // Вызов API для получения информации об игре и скриншотов
   async function fetchGameInfo() {
     try {
+      setIsLoading(true);
+
       const gameDetails = await axios.get(
         `https://api.rawg.io/api/games/${gameSlug}?key=${apiKey}`
       );
@@ -50,8 +54,10 @@ export default function GameDetails() {
   }
 
   useEffect(() => {
-    fetchGameInfo();
-  }, []);
+    if (location.pathname.includes("/games/")) {
+      fetchGameInfo();
+    }
+  }, [location]);
 
   return (
     <>

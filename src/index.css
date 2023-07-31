@@ -6,7 +6,7 @@
 
 @layer base {
   html {
-    font-family: "Inter";
+    font-family: "Inter", sans-serif;
   }
 
   body {
@@ -26,9 +26,9 @@
   .label {
     @apply text-sm font-bold text-[#616161];
   }
-}
 
-.masonry-column {
-  padding-top: 12px;
-  overflow: hidden;
+  .masonry-column {
+    padding-top: 12px;
+    overflow: hidden;
+  }
 }
