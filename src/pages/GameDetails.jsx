@@ -4,7 +4,7 @@ import { MdAdd } from "react-icons/md";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 
-const apiKey = import.meta.env.VITE_API_KEY;
+const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
 export default function GameDetails() {
   const location = useLocation();

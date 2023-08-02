@@ -1,6 +1,6 @@
-import React, { forwardRef, useState, useEffect, useRef } from "react";
+import React, { forwardRef, useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { HiOutlineSearch } from "react-icons/hi";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -8,15 +8,17 @@ import { MdLogin } from "react-icons/md";
 import { GrClose } from "react-icons/gr";
 import { GoPersonAdd } from "react-icons/go";
 
-const apiKey = import.meta.env.VITE_API_KEY;
+const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
 const Navbar = forwardRef((props, ref) => {
-  const { menuIsActive, setMenuIsActive, searchQuery, onChangeSearchQuery } =
-    props;
+  const { menuIsActive, setMenuIsActive } = props;
 
+  const [searchQuery, setSearchQuery] = useState("");
   const [suggestions, setSuggestions] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [searchIsFocused, setSearchIsFocused] = useState(false);
+
+  const location = useLocation();
 
   // Autocomplete
   useEffect(() => {
@@ -29,7 +31,7 @@ const Navbar = forwardRef((props, ref) => {
     const searchGames = async () => {
       try {
         const response = await axios.get(
-          `https://api.rawg.io/api/games?key=${apiKey}&page_size=6&page=1&search=${searchQuery}`
+          `https://api.rawg.io/api/games?key=${apiKey}&page_size=10&page=1&search=${searchQuery}`
         );
         const results = response.data.results;
 
@@ -47,6 +49,11 @@ const Navbar = forwardRef((props, ref) => {
 
     return () => clearTimeout(timer);
   }, [searchQuery, searchIsFocused]);
+
+  // Очистить поисковый запрос, когда URL изменился
+  useEffect(() => {
+    setSearchQuery("");
+  }, [location]);
 
   function handleItemClick() {
     setSearchIsFocused(false);
@@ -77,7 +84,7 @@ const Navbar = forwardRef((props, ref) => {
           type="text"
           placeholder="Search games"
           value={searchQuery}
-          onChange={onChangeSearchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => setSearchIsFocused(true)}
           onBlur={handleSearchBlur}
         />

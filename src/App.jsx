@@ -4,10 +4,11 @@ import Home from "./pages/Home";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import { useState, useRef, useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import GameDetails from "./pages/GameDetails";
+import Account from "./pages/Account";
 
-const apiKey = import.meta.env.VITE_API_KEY;
+const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
 function App() {
   const [gamesList, setGamesList] = useState({
@@ -57,14 +58,6 @@ function App() {
     }
   });
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const location = useLocation();
-
-  // Очистить поисковый запрос, когда URL изменился
-  useEffect(() => {
-    setSearchQuery("");
-  }, [location]);
-
   return (
     <div
       className={`mx-auto box-content max-w-[1400px] px-4 text-white mobile:px-10`}
@@ -73,8 +66,6 @@ function App() {
         ref={mobileMenuRef}
         menuIsActive={menuIsActive}
         setMenuIsActive={setMenuIsActive}
-        searchQuery={searchQuery}
-        onChangeSearchQuery={(e) => setSearchQuery(e.target.value)}
       />
       <Routes>
         <Route
@@ -84,6 +75,7 @@ function App() {
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/games/:gameSlug" element={<GameDetails />} />
+        <Route path="/account" element={<Account />} />
       </Routes>
       {/* Оверлей */}
       <div
