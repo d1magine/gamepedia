@@ -1,12 +1,14 @@
 import React, { forwardRef, useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { HiOutlineSearch } from "react-icons/hi";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { MdLogin } from "react-icons/md";
 import { GrClose } from "react-icons/gr";
 import { GoPersonAdd } from "react-icons/go";
+import { BsPersonFill } from "react-icons/bs";
+import { useAuth } from "../contexts/AuthContext";
 
 const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
@@ -64,6 +66,21 @@ const Navbar = forwardRef((props, ref) => {
       setSearchIsFocused(false);
       setSuggestions(null);
     }, 130);
+  }
+
+  const { currentUser, logOut } = useAuth();
+  const navigate = useNavigate();
+
+  // Выйти из аккаунта
+  async function handleLogOut() {
+    setMenuIsActive(false);
+
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      console.log(error.message);
+    }
   }
 
   return (
@@ -127,24 +144,46 @@ const Navbar = forwardRef((props, ref) => {
           )
         }
       </div>
-      <Link
-        className="hidden rounded px-4 py-1.5 text-sm font-bold duration-200 hover:opacity-70 mobile:block"
-        to="/login"
-      >
-        Log In
-      </Link>
-      <Link
-        className="hidden rounded bg-white px-4 py-1.5 text-sm font-bold text-black duration-200 hover:opacity-70 mobile:block"
-        to="/signup"
-      >
-        Sign Up
-      </Link>
+
+      {currentUser?.email && currentUser?.emailVerified ? (
+        <>
+          <Link
+            className="hidden items-center gap-1 rounded px-4 py-1.5 text-sm font-bold duration-200 hover:opacity-70 mobile:flex"
+            to="/account"
+          >
+            <BsPersonFill size="22px" />
+            Account
+          </Link>
+          <Link
+            onClick={handleLogOut}
+            className="hidden rounded bg-white px-4 py-1.5 text-sm font-bold text-black duration-200 hover:opacity-70 mobile:block"
+          >
+            Log Out
+          </Link>
+        </>
+      ) : (
+        <>
+          <Link
+            className="hidden rounded px-4 py-1.5 text-sm font-bold duration-200 hover:opacity-70 mobile:block"
+            to="/login"
+          >
+            Log In
+          </Link>
+          <Link
+            className="hidden rounded bg-white px-4 py-1.5 text-sm font-bold text-black duration-200 hover:opacity-70 mobile:block"
+            to="/signup"
+          >
+            Sign Up
+          </Link>
+        </>
+      )}
+
+      {/* Мобильное меню */}
       <RxHamburgerMenu
         onClick={() => setMenuIsActive(true)}
         size="20px"
         className="cursor-pointer mobile:hidden"
       />
-      {/* Мобильное меню */}
       <div
         ref={ref}
         className={`fixed right-1.5 top-1.5 z-50 duration-150 ease-linear ${
@@ -159,18 +198,35 @@ const Navbar = forwardRef((props, ref) => {
               size="20px"
             />
           </li>
-          <li className="mb-3 flex items-center gap-2 text-lg">
-            <MdLogin size="24px" />
-            <Link onClick={() => setMenuIsActive(false)} to={"/login"}>
-              Log In
-            </Link>
-          </li>
-          <li className="flex items-center gap-2 text-lg">
-            <GoPersonAdd size="24px" />
-            <Link onClick={() => setMenuIsActive(false)} to={"/signup"}>
-              Sign Up
-            </Link>
-          </li>
+          {currentUser?.email && currentUser?.emailVerified ? (
+            <>
+              <li className="mb-3 flex items-center gap-2 text-lg">
+                <BsPersonFill color="black" size="24px" />
+                <Link onClick={() => setMenuIsActive(false)} to="/account">
+                  Account
+                </Link>
+              </li>
+              <li className="flex items-center gap-2 text-lg">
+                <MdLogin size="24px" />
+                <Link onClick={handleLogOut}>Log Out</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li className="mb-3 flex items-center gap-2 text-lg">
+                <MdLogin size="24px" />
+                <Link onClick={() => setMenuIsActive(false)} to={"/login"}>
+                  Log In
+                </Link>
+              </li>
+              <li className="flex items-center gap-2 text-lg">
+                <GoPersonAdd size="24px" />
+                <Link onClick={() => setMenuIsActive(false)} to={"/signup"}>
+                  Sign Up
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
       </div>
     </nav>

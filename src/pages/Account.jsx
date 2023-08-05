@@ -1,8 +1,11 @@
 import React from "react";
 import Masonry from "react-masonry-css";
 import FavoriteGame from "../components/FavoriteGame";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Account() {
+  const { currentUser } = useAuth();
+
   const breakpointCols = {
     default: 4,
     1200: 3,
@@ -14,7 +17,7 @@ export default function Account() {
 
   return (
     <>
-      <h1 className="pb-7 pt-4">l1xly</h1>
+      <h1 className="pb-7 pt-4">{currentUser?.displayName}</h1>
       <h2 className="pb-12 text-3xl font-bold">Favorite games</h2>
       <Masonry
         className="mx-auto flex max-w-6xl gap-6"

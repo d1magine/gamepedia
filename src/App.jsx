@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import GameDetails from "./pages/GameDetails";
 import Account from "./pages/Account";
+import { AuthContextProvider } from "./contexts/AuthContext";
 
 const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
@@ -59,31 +60,33 @@ function App() {
   });
 
   return (
-    <div
-      className={`mx-auto box-content max-w-[1400px] px-4 text-white mobile:px-10`}
-    >
-      <Navbar
-        ref={mobileMenuRef}
-        menuIsActive={menuIsActive}
-        setMenuIsActive={setMenuIsActive}
-      />
-      <Routes>
-        <Route
-          path="/"
-          element={<Home gamesList={gamesList} fetchNextPage={fetchGames} />}
-        />
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        <Route path="/games/:gameSlug" element={<GameDetails />} />
-        <Route path="/account" element={<Account />} />
-      </Routes>
-      {/* Оверлей */}
+    <AuthContextProvider>
       <div
-        className={`fixed bottom-0 left-0 right-0 top-0 bg-[#000000b3] duration-150 ease-linear ${
-          menuIsActive ? "visible opacity-100" : "invisible opacity-0"
-        }`}
-      ></div>
-    </div>
+        className={`mx-auto box-content max-w-[1400px] px-4 text-white mobile:px-10`}
+      >
+        <Navbar
+          ref={mobileMenuRef}
+          menuIsActive={menuIsActive}
+          setMenuIsActive={setMenuIsActive}
+        />
+        <Routes>
+          <Route
+            path="/"
+            element={<Home gamesList={gamesList} fetchNextPage={fetchGames} />}
+          />
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/games/:gameSlug" element={<GameDetails />} />
+          <Route path="/account" element={<Account />} />
+        </Routes>
+        {/* Оверлей */}
+        <div
+          className={`fixed bottom-0 left-0 right-0 top-0 bg-[#000000b3] duration-150 ease-linear ${
+            menuIsActive ? "visible opacity-100" : "invisible opacity-0"
+          }`}
+        ></div>
+      </div>
+    </AuthContextProvider>
   );
 }
 
