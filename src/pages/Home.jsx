@@ -4,7 +4,7 @@ import Masonry from "react-masonry-css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Helmet } from "react-helmet";
 
-export default function Home({ gamesList, fetchNextPage }) {
+export default function Home({ gamesList, fetchNextPage, savedGames }) {
   const breakpointCols = {
     default: 4,
     1200: 3,
@@ -34,18 +34,14 @@ export default function Home({ gamesList, fetchNextPage }) {
           breakpointCols={breakpointCols}
           columnClassName="masonry-column"
         >
-          {gamesList.games.map((game) => (
+          {gamesList.games.map((g) => (
             <Game
-              key={game.id}
-              slug={game.slug}
-              title={game.name}
-              genres={game.genres}
-              platforms={
-                game.hasOwnProperty("parent_platforms")
-                  ? game.parent_platforms
-                  : []
+              key={g.id}
+              game={g}
+              platforms={g?.parent_platforms ? g.parent_platforms : []}
+              isSaved={
+                savedGames.find((sg) => sg.slug === g.slug) !== undefined
               }
-              coverSrc={game.background_image}
             />
           ))}
         </Masonry>

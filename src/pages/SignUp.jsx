@@ -5,6 +5,8 @@ import FormInput from "../components/FormInput";
 import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
 import { TiWarningOutline } from "react-icons/ti";
+import { db } from "../firebase";
+import { setDoc, doc } from "firebase/firestore";
 
 export default function SignUp() {
   const { signUp, sendEmail, logOut, setUsername } = useAuth();
@@ -38,6 +40,9 @@ export default function SignUp() {
 
       await setUsername(credential.user, formData.username);
       await sendEmail(credential.user);
+      await setDoc(doc(db, "users", credential.user.email), {
+        savedGames: [],
+      });
       await logOut();
 
       alert("Verification message was sent to your email!");

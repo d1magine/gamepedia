@@ -15,6 +15,7 @@ import React from "react";
 
 export function AuthContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
   function signUp(email, password) {
     return createUserWithEmailAndPassword(auth, email, password);
@@ -39,6 +40,7 @@ export function AuthContextProvider({ children }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+      setIsLoading(false);
     });
 
     return unsubscribe;
@@ -48,7 +50,7 @@ export function AuthContextProvider({ children }) {
     <AuthContext.Provider
       value={{ signUp, signIn, logOut, sendEmail, setUsername, currentUser }}
     >
-      {children}
+      {!isLoading && children}
     </AuthContext.Provider>
   );
 }
