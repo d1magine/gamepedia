@@ -10,6 +10,8 @@ import {
 import { FaLinux } from "react-icons/fa";
 import { SiNintendo, SiSega } from "react-icons/si";
 import { TbWorldWww } from "react-icons/tb";
+import { db } from "./firebase";
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 
 // Форматирование даты к виду - February 10, 2023
 export function formatDate(inputDate) {
@@ -52,3 +54,36 @@ export const platformIcons = {
   SEGA: <SiSega key="sega" size={iconSize} />,
   Web: <TbWorldWww key="web" size={iconSize} />,
 };
+
+// Сохранить игру в cloud firestore или удалить
+export async function handleGameClick(
+  currentUser,
+  navigate,
+  setIsLoading,
+  game,
+  isSaved
+) {
+  if (!currentUser) {
+    return navigate("/signup");
+  }
+
+  try {
+    setIsLoading(true);
+
+    const docRef = doc(db, "users", currentUser.email);
+
+    if (isSaved) {
+      await updateDoc(docRef, {
+        savedGames: arrayRemove(game),
+      });
+    } else {
+      await updateDoc(docRef, {
+        savedGames: arrayUnion(game),
+      });
+    }
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setIsLoading(false);
+  }
+}

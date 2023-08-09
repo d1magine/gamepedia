@@ -1,47 +1,23 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MdAdd, MdDone } from "react-icons/md";
-import { db } from "../firebase";
-import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
-import { platformIcons } from "../utilities";
+import { platformIcons, handleGameClick } from "../utilities";
 
 export default function Game({ game, platforms, isSaved }) {
   const navigate = useNavigate();
   const { currentUser } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
-  // Сохранить или удалить игру
-  async function handleGameClick() {
-    if (!currentUser) {
-      return navigate("/signup");
-    }
+  // Обработчик кнопки favorite
+  function handleClick() {
+    const g = {
+      slug: game.slug,
+      title: game.name,
+      coverSrc: game.background_image,
+    };
 
-    try {
-      setIsLoading(true);
-
-      const g = {
-        slug: game.slug,
-        title: game.name,
-        coverSrc: game.background_image,
-      };
-
-      const docRef = doc(db, "users", currentUser.email);
-
-      if (isSaved) {
-        await updateDoc(docRef, {
-          savedGames: arrayRemove(g),
-        });
-      } else {
-        await updateDoc(docRef, {
-          savedGames: arrayUnion(g),
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
+    handleGameClick(currentUser, navigate, setIsLoading, g, isSaved);
   }
 
   return (
@@ -74,7 +50,7 @@ export default function Game({ game, platforms, isSaved }) {
           </div>
         )}
         <button
-          onClick={handleGameClick}
+          onClick={handleClick}
           className={`flex items-center gap-1 rounded ${
             isSaved ? "bg-[#74e78d]" : "bg-white"
           } px-3 py-2 text-sm font-semibold text-black transition-opacity ease-linear hover:opacity-70`}

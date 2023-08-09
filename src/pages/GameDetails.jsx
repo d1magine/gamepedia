@@ -4,9 +4,11 @@ import { MdAdd, MdDone } from "react-icons/md";
 import axios from "axios";
 import { Helmet } from "react-helmet";
 import { useAuth } from "../contexts/AuthContext";
-import { db } from "../firebase";
-import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
-import { formatDate, identifyMetacriticColor } from "../utilities";
+import {
+  formatDate,
+  identifyMetacriticColor,
+  handleGameClick,
+} from "../utilities";
 
 const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
@@ -52,38 +54,15 @@ export default function GameDetails({ savedGames }) {
   const [isSaving, setIsSaving] = useState(false);
   const isSaved = savedGames.find((sG) => sG.slug === gameSlug) !== undefined;
 
-  // Сохранить или удалить игру
-  async function handleGameClick() {
-    if (!currentUser) {
-      navigate("/signup");
-      return;
-    }
+  // Обработчик кнопки favorite
+  function handleClick() {
+    const g = {
+      slug: gameSlug,
+      title: gameInfo.name_original,
+      coverSrc: gameInfo.background_image,
+    };
 
-    try {
-      setIsSaving(true);
-
-      const game = {
-        slug: gameSlug,
-        title: gameInfo.name_original,
-        coverSrc: gameInfo.background_image,
-      };
-
-      const docRef = doc(db, "users", currentUser.email);
-
-      if (isSaved) {
-        await updateDoc(docRef, {
-          savedGames: arrayRemove(game),
-        });
-      } else {
-        await updateDoc(docRef, {
-          savedGames: arrayUnion(game),
-        });
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsSaving(false);
-    }
+    handleGameClick(currentUser, navigate, setIsSaving, g, isSaved);
   }
 
   if (isLoading) {
@@ -106,7 +85,7 @@ export default function GameDetails({ savedGames }) {
         </h2>
       )}
       <button
-        onClick={handleGameClick}
+        onClick={handleClick}
         className={`mb-8 flex items-center gap-1 rounded ${
           isSaved ? "bg-[#74e78d]" : "bg-white"
         } px-5 py-2 text-base font-semibold text-black transition-opacity ease-linear hover:opacity-70`}
