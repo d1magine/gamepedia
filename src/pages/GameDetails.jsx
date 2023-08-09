@@ -10,6 +10,8 @@ import {
   handleGameClick,
 } from "../utilities";
 import GameFeature from "../components/GameFeature";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/opacity.css";
 
 const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
@@ -107,24 +109,26 @@ export default function GameDetails({ savedGames }) {
       </button>
       {gameInfo.background_image && (
         <div className="grid max-h-[600px] grid-cols-3 grid-rows-3 gap-x-5 gap-y-4 tablet:grid-cols-4">
-          <img
-            className={`${
+          <LazyLoadImage
+            src={gameInfo.background_image}
+            className="h-full w-full rounded-md object-cover object-center"
+            wrapperClassName={
               gameInfo.screenshots.length <= 1
                 ? "col-span-4 row-span-4"
                 : "col-span-3 row-span-2 tablet:row-span-3"
-            } h-full w-full rounded-md object-cover object-center`}
-            src={gameInfo.background_image}
-            alt=""
+            }
+            effect="opacity"
           />
           {gameInfo.screenshots.length > 1 &&
             gameInfo.screenshots
               .slice(0, 3)
               .map((screenshot) => (
-                <img
+                <LazyLoadImage
                   key={screenshot.id}
-                  className="h-full w-full rounded-md object-cover object-center"
                   src={screenshot.image}
-                  alt=""
+                  className="h-full w-full rounded-md object-cover object-center"
+                  wrapperClassName="h-full w-full"
+                  effect="opacity"
                 />
               ))}
         </div>

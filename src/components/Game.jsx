@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MdAdd, MdDone } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 import { platformIcons, handleGameClick } from "../utilities";
 
 export default function Game({ game, platforms, isSaved }) {
@@ -24,10 +26,11 @@ export default function Game({ game, platforms, isSaved }) {
     <div className="mx-auto mb-6 max-w-[440px] transition ease-linear hover:-translate-y-[7px] hover:shadow-xl">
       <div className="h-64">
         {game.background_image ? (
-          <img
-            className="h-full w-full rounded-t-2xl object-cover"
+          <LazyLoadImage
             src={game.background_image}
-            alt=""
+            className="h-full w-full rounded-t-2xl object-cover"
+            wrapperClassName="h-full w-full"
+            effect="blur"
           />
         ) : (
           <div className="h-full w-full rounded-t-2xl bg-neutral-950"></div>
