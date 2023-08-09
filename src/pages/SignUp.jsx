@@ -9,14 +9,13 @@ import { db } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
 
 export default function SignUp() {
-  const { signUp, sendEmail, logOut, setUsername } = useAuth();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     username: "",
   });
 
+  // Изменение полей формы
   function handleInputChange(e) {
     setFormData({
       ...formData,
@@ -24,6 +23,7 @@ export default function SignUp() {
     });
   }
 
+  const { signUp, sendEmail, logOut, setUsername } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -56,6 +56,7 @@ export default function SignUp() {
 
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
+  // Задать видимость пароля
   function handlePasswordVisibility() {
     setPasswordIsVisible(!passwordIsVisible);
   }
@@ -80,6 +81,7 @@ export default function SignUp() {
           onChange={handleInputChange}
           label="Email"
           type="email"
+          autoComplete="email"
         />
         <FormInput
           id="username"
@@ -88,7 +90,6 @@ export default function SignUp() {
           onChange={handleInputChange}
           label="Username"
           type="text"
-          autoComplete="off"
         />
         <FormInput
           id="password"

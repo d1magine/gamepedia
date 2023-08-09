@@ -7,13 +7,12 @@ import { useAuth } from "../contexts/AuthContext";
 import { TiWarningOutline } from "react-icons/ti";
 
 export default function LogIn() {
-  const { signIn, logOut } = useAuth();
-
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
+  // Изменение полей формы
   function handleInputChange(e) {
     setFormData({
       ...formData,
@@ -21,6 +20,7 @@ export default function LogIn() {
     });
   }
 
+  const { signIn, logOut } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -50,6 +50,7 @@ export default function LogIn() {
 
   const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
+  // Задать видимость пароля
   function handlePasswordVisibility() {
     setPasswordIsVisible(!passwordIsVisible);
   }
@@ -74,6 +75,7 @@ export default function LogIn() {
           onChange={handleInputChange}
           label="Email"
           type="email"
+          autoComplete="email"
         />
         <FormInput
           id="password"
