@@ -27,10 +27,6 @@
     @apply box-content flex shrink-0 items-center justify-center gap-2 self-center rounded-xl bg-[#D31225] px-4 py-2 text-sm font-bold;
   }
 
-  .label {
-    @apply text-sm font-bold text-[#616161];
-  }
-
   .masonry-column {
     padding-top: 12px;
     overflow: hidden;

@@ -9,6 +9,7 @@ import {
   identifyMetacriticColor,
   handleGameClick,
 } from "../utilities";
+import GameFeature from "../components/GameFeature";
 
 const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
@@ -140,7 +141,9 @@ export default function GameDetails({ savedGames }) {
           <div className="grid grid-cols-2 gap-x-4 gap-y-6 tablet:max-w-[350px]">
             {gameInfo.metacritic && (
               <div className="flex items-center gap-2">
-                <div className="label">Metascore:</div>
+                <div className="text-sm font-bold text-[#616161]">
+                  Metascore:
+                </div>
                 <div
                   className={`flex aspect-square w-9 items-center justify-center rounded-full border font-bold ${gameInfo.metacriticColor}`}
                 >
@@ -149,45 +152,29 @@ export default function GameDetails({ savedGames }) {
               </div>
             )}
             <div>
-              <div className="label mb-2">Release Date:</div>
+              <div className="mb-2 text-sm font-bold text-[#616161]">
+                Release Date:
+              </div>
               <div className="font-bold underline">
                 {gameInfo.tba ? "TBA" : formatDate(gameInfo.released)}
               </div>
             </div>
-            {gameInfo.platforms.length !== 0 && (
-              <div>
-                <div className="label mb-2">Platforms:</div>
-                <div className="font-bold underline">
-                  {gameInfo.platforms.map((p) => p.platform.name).join(", ")}
-                </div>
-              </div>
-            )}
-            {gameInfo.developers.length !== 0 && (
-              <div>
-                <div className="label mb-2">Developers:</div>
-                <div className="font-bold underline">
-                  {gameInfo.developers.map((dev) => dev.name).join(", ")}
-                </div>
-              </div>
-            )}
-            {gameInfo.genres.length !== 0 && (
-              <div>
-                <div className="label mb-2">Genres:</div>
-                <div className="font-bold underline">
-                  {gameInfo.genres.map((genre) => genre.name).join(", ")}
-                </div>
-              </div>
-            )}
-            {gameInfo.publishers.length !== 0 && (
-              <div>
-                <div className="label mb-2">Publishers:</div>
-                <div className="font-bold underline">
-                  {gameInfo.publishers
-                    .map((publisher) => publisher.name)
-                    .join(", ")}
-                </div>
-              </div>
-            )}
+            <GameFeature
+              feature={gameInfo.platforms.map((p) => p.platform.name)}
+              label="Platforms:"
+            />
+            <GameFeature
+              feature={gameInfo.developers.map((d) => d.name)}
+              label="Developers:"
+            />
+            <GameFeature
+              feature={gameInfo.genres.map((g) => g.name)}
+              label="Genres:"
+            />
+            <GameFeature
+              feature={gameInfo.publishers.map((p) => p.name)}
+              label="Publishers:"
+            />
           </div>
         </div>
       </div>
