@@ -6,28 +6,11 @@ import { Helmet } from "react-helmet";
 import { useAuth } from "../contexts/AuthContext";
 import { db } from "../firebase";
 import { doc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { formatDate, identifyMetacriticColor } from "../utilities";
 
 const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
 export default function GameDetails({ savedGames }) {
-  // Форматирование даты (February 10, 2023)
-  function formatDate(dateToFormat) {
-    const formatter = new Intl.DateTimeFormat("en-us", { month: "long" });
-    const date = new Date(dateToFormat);
-    return `${formatter.format(date)} ${date.getDate()}, ${date.getFullYear()}`;
-  }
-
-  // Цвет оценки metacritic
-  function identifyMetacriticColor(metacritic) {
-    if (metacritic >= 75) {
-      return "#6dc849";
-    } else if (metacritic >= 50) {
-      return "#fdca52";
-    }
-
-    return "#fc4b37";
-  }
-
   const location = useLocation();
   const { gameSlug } = useParams();
   const [gameInfo, setGameInfo] = useState({});
@@ -42,6 +25,10 @@ export default function GameDetails({ savedGames }) {
       );
       const gameScreenshots = await axios.get(
         `https://api.rawg.io/api/games/${gameSlug}/screenshots?key=${apiKey}`
+      );
+
+      gameDetails.data.metacriticColor = identifyMetacriticColor(
+        gameDetails.data.metacritic
       );
 
       setGameInfo({
@@ -176,11 +163,7 @@ export default function GameDetails({ savedGames }) {
               <div className="flex items-center gap-2">
                 <div className="label">Metascore:</div>
                 <div
-                  style={{
-                    color: identifyMetacriticColor(gameInfo.metacritic),
-                    borderColor: identifyMetacriticColor(gameInfo.metacritic),
-                  }}
-                  className={`flex aspect-square w-9 items-center justify-center rounded-full border font-bold`}
+                  className={`flex aspect-square w-9 items-center justify-center rounded-full border font-bold ${gameInfo.metacriticColor}`}
                 >
                   {gameInfo.metacritic}
                 </div>

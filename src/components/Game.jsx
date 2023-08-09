@@ -1,34 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  BsWindows,
-  BsPlaystation,
-  BsXbox,
-  BsApple,
-  BsAndroid,
-  BsPhone,
-} from "react-icons/bs";
-import { FaLinux } from "react-icons/fa";
-import { SiNintendo, SiSega } from "react-icons/si";
-import { TbWorldWww } from "react-icons/tb";
 import { MdAdd, MdDone } from "react-icons/md";
 import { db } from "../firebase";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import { useAuth } from "../contexts/AuthContext";
-
-const iconSize = "14px";
-const platformIcons = {
-  PC: <BsWindows key="pc" size={iconSize} />,
-  PlayStation: <BsPlaystation key="playstation" size="18px" />,
-  Xbox: <BsXbox key="xbox" size={iconSize} />,
-  iOS: <BsPhone key="ios" size={iconSize} />,
-  Android: <BsAndroid key="android" size={iconSize} />,
-  "Apple Macintosh": <BsApple key="mac" size={iconSize} />,
-  Linux: <FaLinux key="linux" size="15px" />,
-  Nintendo: <SiNintendo key="nintendo" size={iconSize} />,
-  SEGA: <SiSega key="sega" size={iconSize} />,
-  Web: <TbWorldWww key="web" size={iconSize} />,
-};
+import { platformIcons } from "../utilities";
 
 export default function Game({ game, platforms, isSaved }) {
   const navigate = useNavigate();
@@ -94,7 +70,7 @@ export default function Game({ game, platforms, isSaved }) {
         )}
         {platforms.length !== 0 && (
           <div className="mb-4 flex items-center gap-3">
-            {platforms.map((platform) => platformIcons[platform.platform.name])}
+            {platforms.map((p) => platformIcons[p.platform.name])}
           </div>
         )}
         <button

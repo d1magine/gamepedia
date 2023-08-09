@@ -3,16 +3,10 @@ import Masonry from "react-masonry-css";
 import FavoriteGame from "../components/FavoriteGame";
 import { useAuth } from "../contexts/AuthContext";
 import { Helmet } from "react-helmet";
+import { masonryBreakpointCols } from "../utilities";
 
 export default function Account({ savedGames, loading }) {
   const { currentUser } = useAuth();
-
-  const breakpointCols = {
-    default: 4,
-    1200: 3,
-    930: 2,
-    768: 1,
-  };
 
   return (
     <>
@@ -30,7 +24,7 @@ export default function Account({ savedGames, loading }) {
       ) : (
         <Masonry
           className="mx-auto flex max-w-6xl gap-6"
-          breakpointCols={breakpointCols}
+          breakpointCols={masonryBreakpointCols}
         >
           {savedGames.map((game) => (
             <FavoriteGame key={game.slug} game={game} />

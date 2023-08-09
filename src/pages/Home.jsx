@@ -3,15 +3,9 @@ import Game from "../components/Game";
 import Masonry from "react-masonry-css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Helmet } from "react-helmet";
+import { masonryBreakpointCols } from "../utilities";
 
 export default function Home({ gamesList, fetchNextPage, savedGames }) {
-  const breakpointCols = {
-    default: 4,
-    1200: 3,
-    930: 2,
-    768: 1,
-  };
-
   return (
     <>
       <Helmet>
@@ -31,7 +25,7 @@ export default function Home({ gamesList, fetchNextPage, savedGames }) {
       >
         <Masonry
           className="flex w-auto gap-6"
-          breakpointCols={breakpointCols}
+          breakpointCols={masonryBreakpointCols}
           columnClassName="masonry-column"
         >
           {gamesList.games.map((g) => (
