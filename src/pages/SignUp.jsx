@@ -7,6 +7,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { TiWarningOutline } from "react-icons/ti";
 import { db } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
+import usePasswordVisibility from "../hooks/usePasswordVisibility";
 
 export default function SignUp() {
   const [formData, setFormData] = useState({
@@ -54,12 +55,8 @@ export default function SignUp() {
     }
   }
 
-  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
-
-  // Задать видимость пароля
-  function handlePasswordVisibility() {
-    setPasswordIsVisible(!passwordIsVisible);
-  }
+  const { passwordIsVisible, handlePasswordVisibility } =
+    usePasswordVisibility();
 
   return (
     <div className="mx-auto max-w-md px-5 pt-24 text-center mobile:px-0 mobile:pt-32">
