@@ -58,13 +58,10 @@ function App() {
     }
 
     // Обновление state'а сохраненных игр в реальном времени
-    const unsubscribe = onSnapshot(
-      doc(db, "users", currentUser.email),
-      (doc) => {
-        setSavedGames(doc.data().savedGames);
-        setLoading(false);
-      }
-    );
+    const unsubscribe = onSnapshot(doc(db, "users", currentUser.uid), (doc) => {
+      setSavedGames(doc.data().savedGames);
+      setLoading(false);
+    });
 
     return () => unsubscribe;
   }, [currentUser]);

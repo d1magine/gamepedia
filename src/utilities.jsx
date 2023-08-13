@@ -70,7 +70,7 @@ export async function handleGameClick(
   try {
     setIsLoading(true);
 
-    const docRef = doc(db, "users", currentUser.email);
+    const docRef = doc(db, "users", currentUser.uid);
 
     if (isSaved) {
       await updateDoc(docRef, {

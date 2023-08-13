@@ -35,7 +35,7 @@ export default function SignUp() {
 
       await setUsername(credential.user, formData.username);
       await sendEmail(credential.user);
-      await setDoc(doc(db, "users", credential.user.email), {
+      await setDoc(doc(db, "users", credential.user.uid), {
         savedGames: [],
       });
       await logOut();
