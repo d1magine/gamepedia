@@ -11,7 +11,7 @@ export default function FavoriteGame({ game }) {
   // Удалить игру из избранных
   async function handleRemoveGame() {
     try {
-      const docRef = doc(db, "users", currentUser.email);
+      const docRef = doc(db, "users", currentUser.uid);
 
       await updateDoc(docRef, {
         savedGames: arrayRemove(game),
