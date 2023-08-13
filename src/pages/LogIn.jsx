@@ -6,20 +6,14 @@ import { MdOutlineVisibility, MdOutlineVisibilityOff } from "react-icons/md";
 import { useAuth } from "../contexts/AuthContext";
 import { TiWarningOutline } from "react-icons/ti";
 import usePasswordVisibility from "../hooks/usePasswordVisibility";
+import useForm from "../hooks/useForm";
 
 export default function LogIn() {
-  const [formData, setFormData] = useState({
+  // Изменение полей формы
+  const { formData, handleFormChange } = useForm({
     email: "",
     password: "",
   });
-
-  // Изменение полей формы
-  function handleInputChange(e) {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  }
 
   const { signIn, logOut } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -69,7 +63,7 @@ export default function LogIn() {
           id="email"
           name="email"
           value={formData.email}
-          onChange={handleInputChange}
+          onChange={handleFormChange}
           label="Email"
           type="email"
           autoComplete="email"
@@ -78,7 +72,7 @@ export default function LogIn() {
           id="password"
           name="password"
           value={formData.password}
-          onChange={handleInputChange}
+          onChange={handleFormChange}
           label="Password"
           type={passwordIsVisible ? "text" : "password"}
         >

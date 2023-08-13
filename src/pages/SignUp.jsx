@@ -8,21 +8,15 @@ import { TiWarningOutline } from "react-icons/ti";
 import { db } from "../firebase";
 import { setDoc, doc } from "firebase/firestore";
 import usePasswordVisibility from "../hooks/usePasswordVisibility";
+import useForm from "../hooks/useForm";
 
 export default function SignUp() {
-  const [formData, setFormData] = useState({
+  // Изменение полей формы
+  const { formData, handleFormChange } = useForm({
     email: "",
     password: "",
     username: "",
   });
-
-  // Изменение полей формы
-  function handleInputChange(e) {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  }
 
   const { signUp, sendEmail, logOut, setUsername } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
@@ -75,7 +69,7 @@ export default function SignUp() {
           id="email"
           name="email"
           value={formData.email}
-          onChange={handleInputChange}
+          onChange={handleFormChange}
           label="Email"
           type="email"
           autoComplete="email"
@@ -84,7 +78,7 @@ export default function SignUp() {
           id="username"
           name="username"
           value={formData.username}
-          onChange={handleInputChange}
+          onChange={handleFormChange}
           label="Username"
           type="text"
         />
@@ -92,7 +86,7 @@ export default function SignUp() {
           id="password"
           name="password"
           value={formData.password}
-          onChange={handleInputChange}
+          onChange={handleFormChange}
           label="Password"
           type={passwordIsVisible ? "text" : "password"}
         >
