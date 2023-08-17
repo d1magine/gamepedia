@@ -12,6 +12,7 @@ import {
 import GameFeature from "../components/GameFeature";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/opacity.css";
+import ImageViewer from "../components/ImageViewer";
 
 const apiKey = import.meta.env.VITE_RAWG_API_KEY;
 
@@ -68,6 +69,22 @@ export default function GameDetails({ savedGames }) {
     handleGameClick(currentUser, navigate, setIsSaving, g, isSaved);
   }
 
+  const [selectedImgIndex, setSelectedImgIndex] = useState(null);
+
+  // Открыть галерею если была кликнута картинка
+  if (selectedImgIndex !== null) {
+    return (
+      <ImageViewer
+        images={[
+          gameInfo.background_image,
+          ...gameInfo.screenshots.map((s) => s.image),
+        ]}
+        selectedImgIndex={selectedImgIndex}
+        setSelectedImgIndex={setSelectedImgIndex}
+      />
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="spinner absolute bottom-0 left-0 right-0 top-0 m-auto"></div>
@@ -110,8 +127,9 @@ export default function GameDetails({ savedGames }) {
       {gameInfo.background_image && (
         <div className="grid max-h-[600px] grid-cols-3 grid-rows-3 gap-x-5 gap-y-4 tablet:grid-cols-4">
           <LazyLoadImage
+            onClick={() => setSelectedImgIndex(0)}
             src={gameInfo.background_image}
-            className="h-full w-full rounded-md object-cover object-center"
+            className="h-full w-full cursor-pointer rounded-md object-cover object-center"
             wrapperClassName={
               gameInfo.screenshots.length <= 1
                 ? "col-span-4 row-span-4"
@@ -122,11 +140,12 @@ export default function GameDetails({ savedGames }) {
           {gameInfo.screenshots.length > 1 &&
             gameInfo.screenshots
               .slice(0, 3)
-              .map((screenshot) => (
+              .map((screenshot, i) => (
                 <LazyLoadImage
                   key={screenshot.id}
+                  onClick={() => setSelectedImgIndex(i + 1)}
                   src={screenshot.image}
-                  className="h-full w-full rounded-md object-cover object-center"
+                  className="h-full w-full cursor-pointer rounded-md object-cover object-center"
                   wrapperClassName="h-full w-full"
                   effect="opacity"
                 />

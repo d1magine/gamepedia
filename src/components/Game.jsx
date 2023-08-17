@@ -25,16 +25,18 @@ export default function Game({ game, platforms, isSaved }) {
   return (
     <div className="mx-auto mb-6 max-w-[440px] transition ease-linear hover:-translate-y-[7px] hover:shadow-xl">
       <div className="h-64">
-        {game.background_image ? (
-          <LazyLoadImage
-            src={game.background_image}
-            className="h-full w-full rounded-t-2xl object-cover"
-            wrapperClassName="h-full w-full"
-            effect="blur"
-          />
-        ) : (
-          <div className="h-full w-full rounded-t-2xl bg-neutral-950"></div>
-        )}
+        <Link to={`games/${game.slug}`}>
+          {game.background_image ? (
+            <LazyLoadImage
+              src={game.background_image}
+              className="h-full w-full rounded-t-2xl object-cover"
+              wrapperClassName="h-full w-full"
+              effect="blur"
+            />
+          ) : (
+            <div className="h-full w-full rounded-t-2xl bg-neutral-950"></div>
+          )}
+        </Link>
       </div>
       <div className="rounded-b-2xl bg-zinc-800 px-4 pb-5 pt-3">
         <Link to={`games/${game.slug}`}>
