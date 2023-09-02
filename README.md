@@ -19,9 +19,12 @@
 * Tailwind CSS;
 * Vite.
 
-## Внешний вид:
-![image](https://github.com/d1magine/gamepedia/assets/82451955/05ca2555-392f-467e-b6d3-cd470e3e2b73 "Главная страница")
-![image](https://github.com/d1magine/gamepedia/assets/82451955/4f750000-4422-4b8a-83a8-cf0b2d1bf57b "Страница подробной информации о видеоигре")
-![image](https://github.com/d1magine/gamepedia/assets/82451955/35fd5985-3edb-41ec-bd8e-0411c11bce89 "Страница регистрации")
-
-
+## Внешний вид
+### Главная страница:
+![image](https://github.com/d1magine/gamepedia/assets/82451955/05ca2555-392f-467e-b6d3-cd470e3e2b73)
+### Страница подробной информации о видеоигре:
+![image](https://github.com/d1magine/gamepedia/assets/82451955/4f750000-4422-4b8a-83a8-cf0b2d1bf57b)
+### Страница регистрации:
+![image](https://github.com/d1magine/gamepedia/assets/82451955/35fd5985-3edb-41ec-bd8e-0411c11bce89)
+### Избранные видеоигры пользователя:
+![image](https://github.com/d1magine/gamepedia/assets/82451955/c860f15a-671a-4750-bf34-9aa06627329d)
